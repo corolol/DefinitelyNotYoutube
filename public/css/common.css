@@ -17,7 +17,7 @@ html, body {
 
 body {
     background: #333;
-    font-family: Calibri;
+    font-family: Arial, sans-serif;
     color: white;
 }
 
@@ -33,6 +33,7 @@ body {
 .topbar {
     position: fixed;
     top: 0;
+    z-index: 10;
 
     height: var(--topbar-height);
     padding: 0.75rem 1rem;
@@ -41,8 +42,14 @@ body {
 }
 
 .topbar a {
+    display: flex;
+    flex: 0 0 auto;
     text-decoration: none;
     color: inherit;
+}
+
+.topbar img {
+    width: 169px;
 }
 
 .topbar > .material-symbols-outlined:hover {
