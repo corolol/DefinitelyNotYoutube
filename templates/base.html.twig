@@ -27,7 +27,22 @@
                 </div>
             </div>
             <div class="row w-100 d-flex flex-nowrap m-0">
-                <div class="sidebar">side</div>
+                <div class="sidebar d-flex flex-column">
+                    <div class="sidebar-elem d-flex align-items-center p-2{{app.request.attributes.get('_route') == "app_index" ? " current" : ""}}">
+                        <a href="/"></a>
+                        <div class="material-symbols-outlined mr-2">
+                            home
+                        </div>
+                        <span class="label">Home</span>
+                    </div>
+                    <div class="sidebar-elem d-flex align-items-center p-2{{app.request.attributes.get('_route') == "app_account" ? " current" : ""}}">
+                        <a href="/account"></a>
+                        <div class="material-symbols-outlined mr-2">
+                            account_circle
+                        </div>
+                        <span class="label">Account</span>
+                    </div>
+                </div>
                 <div class="container-fluid flex-shrink-1 content">
                     {% block body %}{% endblock %}
                 </div>

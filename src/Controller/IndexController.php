@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,8 +15,18 @@ use function PHPSTORM_META\type;
 class IndexController extends AbstractController
 {
     #[Route('/', name: 'app_index')]
-    public function index(): Response
+    public function index(EntityManagerInterface $manager): Response
     {
+        $manager->getConnection()->connect();
+        echo $manager->getConnection()->isConnected() ? "P" : "f";
+        
+        // try {
+        //     $manager->getConnection()->isConnected();
+        // }
+        // catch(Exception $e) {
+        //     echo $e;
+        // }
+
         $finder = new Finder();
         $finder->files()->in("img/thumbnails");
 
