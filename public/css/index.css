@@ -12,14 +12,31 @@
     width: 100%;
 }
 
+.thumbnail > .image > a {
+    display: block;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 2;
+}
+
 .thumbnail > .image > .time {
     position: absolute;
-    right: 5px;
+    right: 2px;
     bottom: 2px;
+    z-index: 1;
+
     padding: 0.05rem 0.25rem;
 
     background: rgba(0, 0, 0, 0.75);
     border-radius: 2px;
+
+    font-size: 0.85rem;
 }
 
 .thumbnail > .title {
@@ -47,4 +64,16 @@
     
     color: inherit;
     text-decoration: none;
+}
+
+.thumbnail .author {
+    color: #aaa;
+}
+
+.thumbnail .author:hover {
+    color: white;
+}
+
+.thumbnail .author > a {
+    color: inherit;
 }
