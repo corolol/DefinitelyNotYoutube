@@ -7,30 +7,29 @@
 {% endblock %}
 
 {% block body %}
-    <div class="row gx-3 gy-4 thumbnail-container">
+    <div class="row gx-3 gy-4 px-0 py-4 p-sm-4 thumbnail-container">
         {% for video in videos %}
-
-        <div class="col-md-6 col-lg-4 col-xxl-3 thumbnail">
-            <div class="image">
-                <a href="/video?v={{ video.UUID }}"></a>
-                <img src="/img/thumbnails/{{ video.thumbnail }}" alt="" draggable="false">
-                {# <img src="/img/thumbnails/138728.jpg" alt=""> #}
-                <div class="time">12:52</div>
-            </div>
-            <div class="title">
-                <a href="/video?v={{ video.UUID }}" title="{{ video.title }}">
-                    {# Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus, consequuntur non. Natus, consequuntur non. Natus, consequuntur non. #}
-                    {{video.title}}
-                </a>
-            </div>
-            <div class="author-container">
-                <span class="author">
-                    <a href="#" class="text-decoration-none">
-                        {{ video.getAuthor().getUsername() }}
+            <div class="col-md-6 col-lg-4 col-xxl-3 thumbnail">
+                <div class="image">
+                    <a href="/video?v={{ video.UUID }}"></a>
+                    <img src="/img/thumbnails/{{ video.thumbnail }}" alt="" draggable="false">
+                    {# <img src="/img/thumbnails/138728.jpg" alt=""> #}
+                    <div class="time">12:52</div>
+                </div>
+                <div class="title">
+                    <a href="/video?v={{ video.UUID }}" title="{{ video.title }}">
+                        {# Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus, consequuntur non. Natus, consequuntur non. Natus, consequuntur non. #}
+                        {{video.title}}
                     </a>
-                </span>
+                </div>
+                <div class="author-container">
+                    <span class="author">
+                        <a href="#" class="text-decoration-none">
+                            {{ video.getAuthor().getUsername() }}
+                        </a>
+                    </span>
+                </div>
             </div>
-        </div>
         {% endfor %}
     </div>
 {% endblock %}
