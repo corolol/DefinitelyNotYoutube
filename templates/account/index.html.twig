@@ -7,10 +7,31 @@
 {% endblock %}
 
 {% block body %}
-    <div class="row flex-column">
-        <div class="d-flex p-0 align-items-baseline baner">
-            <img src="/img/banner.webp" alt="" class="w-100">
-            {# {{ app.user.username }} #}
+    <div class="row flex-column gy-2">
+        <div class="col-12 p-0 baner">
+            <img src="/img/banner.png" alt="" class="w-100">
+            <div class="controls position-absolute w-100 h-100 py-2 px-3 d-flex align-items-end justify-content-between">
+                <div class="username">{{ app.user.username }}</div>
+                <button class="btn btn-primary" onclick="location.href = '{{ path('app_video_upload') }}';">Upload video</button>
+            </div>
+        </div>
+        <div class="col-12 d-flex justify-content-center">
+            {# {{ dump(latest_video) }} #}
+            <div class="display-6 py-2">Latest video overview</div>
+        </div>
+        <div class="col-12">
+            <div class="row mx-2 py-2 gy-2 latest-video">
+                <div class="col-md-4 d-flex justify-content-center thumbnail">
+                    <img src="/img/thumbnails/{{latest_video.thumbnail}}" alt="">
+                </div>
+                <div class="col-md-5 d-flex flex-column details">
+                    <span class="fw-bold fs-4">{{ latest_video.title }}</span>
+                    <span>Uploaded: {{ latest_video.getUploadDate()|date('d-m-Y') }}</span>
+                </div>
+                <div class="col-md-3 d-flex justify-content-center align-items-center">
+                    <button class="btn btn-primary">Go to the video</button>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

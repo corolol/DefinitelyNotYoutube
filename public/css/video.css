@@ -1,0 +1,31 @@
+.video-wraper {
+    width: 100%;
+    aspect-ratio: 16/9;
+}
+
+video {
+    width: 100%;
+    height: 100%;
+}
+
+.title {
+    font-family: Roboto, sans-serif;
+}
+
+.video-info .author {
+    align-self: flex-start;
+    color: #aaa;
+}
+
+.video-info .author:hover {
+    color: white;
+}
+
+.video-info .author > a {
+    color: inherit;
+}
+
+.description {
+    background: #222;
+    border-radius: 10px;
+}
