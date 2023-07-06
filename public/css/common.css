@@ -63,6 +63,22 @@ body {
     border: 1px solid white;
     border-radius: 10rem;
     background: #222;
+    overflow: hidden;
+}
+
+.search-bar > input {
+    width: 100%;
+    padding-left: 2ch;
+    border: none;
+    background: transparent;
+    color: white;
+}
+
+.search-bar > button {
+    padding: 0 1.5rem 0 1.25rem;
+    border: none;
+    background: #333;
+    color: white;
 }
 
 .sidebar {

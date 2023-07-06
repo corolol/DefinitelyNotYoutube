@@ -13,10 +13,18 @@
     </head>
     <body>
         <div class="container-fluid p-0">
-            <div class="w-100 d-flex justify-content-between topbar">
+            <div class="w-100 d-flex justify-content-between align-items-center topbar">
                 <a href="/">
-                    <img src="/img/logo.png" alt="" class="h-100">                
+                    <img src="/img/logo.png" alt="" class="h-75">                
                 </a>
+                <div class="search-bar d-flex">
+                    <input id="searchBarInput" type="text">
+                    <button class="d-flex align-items-center">
+                        <div class="material-symbols-outlined fs-3">
+                            search
+                        </div>
+                    </button>
+                </div>
                 <div class="d-flex align-items-center">
                     <div class="mx-2">{{ app.user ? app.user.username : "" }}</div>
                     <div class="material-symbols-outlined">
@@ -26,26 +34,32 @@
                     </div>
                 </div>
             </div>
-            <div class="row w-100 d-flex flex-nowrap m-0">
-                <div class="sidebar d-flex flex-column">
-                    <div class="sidebar-elem d-flex align-items-center p-2{{app.request.attributes.get('_route') == "app_index" ? " current" : ""}}">
-                        <a href="/"></a>
-                        <div class="material-symbols-outlined mr-2">
-                            home
-                        </div>
-                        <span class="label">Home</span>
+            <div class="sidebar d-flex flex-column">
+                <div class="sidebar-elem d-flex align-items-center p-2">
+                    <a href="/"></a>
+                    <div class="icon" style="fill: white;">
+                        {% if app.request.attributes.get('_route') == "app_index" %}
+                            <svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 -960 960 960" width="32"><path d="M180.001-140.001v-449.998L480-815.767l299.999 225.768v449.998H556.154v-267.692H403.846v267.692H180.001Z"/></svg>
+                        {% else %}
+                            <svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 -960 960 960" width="32"><path d="M225.385-185.385h155.77v-245h197.69v245h155.77v-381.922L480-759.23 225.385-567.436v382.051Zm-45.384 45.384v-449.998L480-815.767l299.999 225.768v449.998H533.462v-245H426.538v245H180.001ZM480-472.615Z"/></svg>
+                        {% endif %}
                     </div>
-                    <div class="sidebar-elem d-flex align-items-center p-2{{app.request.attributes.get('_route') == "app_account" ? " current" : ""}}">
-                        <a href="/account"></a>
-                        <div class="material-symbols-outlined mr-2">
-                            account_circle
-                        </div>
-                        <span class="label">Account</span>
+                    <span class="label">Home</span>
+                </div>
+                <div class="sidebar-elem d-flex align-items-center p-2{{app.request.attributes.get('_route') == "app_account" ? " current" : ""}}">
+                    <a href="/account"></a>
+                    <div class="icon">
+                        {% if app.request.attributes.get('_route') == "app_account" %}
+                            <svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 -960 960 960" width="32"><path d="M232.001-253.077q59.923-38.461 118.922-58.961 59-20.5 129.077-20.5t129.384 20.5q59.308 20.5 119.231 58.961 43.615-50.538 64.807-106.692Q814.615-415.923 814.615-480q0-141.538-96.538-238.077Q621.538-814.615 480-814.615t-238.077 96.538Q145.385-621.538 145.385-480q0 64.077 21.5 120.231 21.5 56.154 65.116 106.692Zm247.813-204.231q-53.968 0-90.775-36.994-36.808-36.993-36.808-90.961 0-53.967 36.994-90.775 36.993-36.807 90.961-36.807 53.968 0 90.775 36.993 36.808 36.994 36.808 90.961 0 53.968-36.994 90.775-36.993 36.808-90.961 36.808Zm-.219 357.307q-78.915 0-148.39-29.77-69.475-29.769-120.878-81.576-51.403-51.808-80.864-120.802-29.462-68.994-29.462-148.351 0-78.972 29.77-148.159 29.769-69.186 81.576-120.494 51.808-51.307 120.802-81.076 68.994-29.77 148.351-29.77 78.972 0 148.159 29.77 69.186 29.769 120.494 81.076 51.307 51.308 81.076 120.654 29.77 69.345 29.77 148.233 0 79.272-29.77 148.192-29.769 68.919-81.076 120.727-51.308 51.807-120.783 81.576-69.474 29.77-148.775 29.77Z"/></svg>
+                        {% else %}
+                            <svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 -960 960 960" width="32"><path d="M232.001-253.077q59.923-41.307 119.23-64.038Q410.539-339.846 480-339.846q69.461 0 129.077 22.731 59.615 22.731 119.538 64.038 43.615-50.538 64.807-106.725Q814.615-415.989 814.615-480q0-141.538-96.538-238.077Q621.538-814.615 480-814.615t-238.077 96.538Q145.385-621.538 145.385-480q0 64.011 21.5 120.198t65.116 106.725Zm247.782-204.231q-53.937 0-90.744-37.025-36.808-37.024-36.808-90.961 0-53.936 37.025-90.744 37.024-36.807 90.961-36.807t90.744 37.024q36.808 37.024 36.808 90.961t-37.025 90.744q-37.024 36.808-90.961 36.808Zm.685 357.307q-79.006 0-148.242-29.77-69.235-29.769-120.961-81.576-51.725-51.808-81.494-120.727-29.77-68.92-29.77-148t29.77-147.925q29.769-68.846 81.576-120.654 51.808-51.807 120.727-81.576 68.92-29.77 148-29.77t147.925 29.77q68.846 29.769 120.654 81.576 51.807 51.808 81.576 120.686 29.77 68.878 29.77 147.499 0 79.006-29.77 148.242-29.769 69.235-81.576 120.961-51.808 51.725-120.686 81.494-68.878 29.77-147.499 29.77ZM480-145.385q55.769 0 110-17.731t102.154-57.346q-47.923-35.231-101.5-54.616Q537.077-294.462 480-294.462T369.154-275.27q-53.77 19.192-100.923 54.808Q315.769-180.847 370-163.116q54.231 17.731 110 17.731Zm.054-357.307q35.869 0 59.1-23.284 23.231-23.285 23.231-59.154 0-35.87-23.285-59.101-23.284-23.231-59.154-23.231-35.869 0-59.1 23.285-23.231 23.284-23.231 59.154 0 35.869 23.285 59.1 23.284 23.231 59.154 23.231ZM480-585.077Zm0 365.153Z"/></svg>
+                        {% endif %}
                     </div>
+                    <span class="label">Account</span>
                 </div>
-                <div class="container-fluid flex-shrink-1 content">
-                    {% block body %}{% endblock %}
-                </div>
+            </div>
+            <div class="container-fluid flex-shrink-1 content">
+                {% block body %}{% endblock %}
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
