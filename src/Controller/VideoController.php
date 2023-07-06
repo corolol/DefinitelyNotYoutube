@@ -33,6 +33,9 @@ class VideoController extends AbstractController
             return $this->redirectToRoute('app_index');
         }
 
+        $video->setViews($video->getViews()+1);
+        $em->flush();
+
         return $this->render('video/index.html.twig', [
             'video' => $video
         ]);
@@ -83,6 +86,7 @@ class VideoController extends AbstractController
                 $video->setAuthor($currentUser);
                 $video->setFile($filename);
                 $video->setThumbnail($thumbnailFilename);
+                $video->setViews(0);
 
                 $em->persist($video);
                 $em->flush();
