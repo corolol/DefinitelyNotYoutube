@@ -19,11 +19,16 @@ class SearchController extends AbstractController
         if (!$search) return $this->redirectToRoute("app_index");
 
         $result = $em->getRepository(Video::class)->createQueryBuilder('v')
-            ->where('v.title LIKE ');
+            ->where('v.title LIKE :query')
+            ->setParameter('query', '%'.trim($search).'%')
+            ->getQuery()
+            ->execute()    
+        ;
 
 
         return $this->render('search/index.html.twig', [
             'controller_name' => 'SearchController',
+            'result' => $result,
         ]);
     }
 }

@@ -1,20 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SearchController!{% endblock %}
+{% block title %}Search results | DefinitelyNotYouTube{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="/css/search.css">
+{% endblock %}
+
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/home/corolol/Documents/Projects/DefinitelyNotYoutube/src/Controller/SearchController.php'|file_link(0) }}">src/Controller/SearchController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/corolol/Documents/Projects/DefinitelyNotYoutube/templates/search/index.html.twig'|file_link(0) }}">templates/search/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <div class="row flex-column align-items-center py-4 gy-3">
+        {% if not result %}
+            <div class="col-10 text-center">No results</div>
+        {% else %}
+            {% for v in result %}
+                <div class="col-12 col-sm-10 d-flex search-result">
+                    <div class="thumbnail-wrapper">
+                        <a href="/video?v={{ v.UUID }}"></a>
+                        <img src="/img/thumbnails/{{ v.thumbnail }}" alt="">
+                    </div>
+                    <div class="d-flex flex-column flex-grow-1 info">
+                        <span class="title">
+                            <a href="/video?v={{ v.UUID }}">{{ v.title }}</a>
+                        </span>
+                        <span class="details">{{ v.views }} views ● Uploaded: {{ v.getUploadDate()|date('d-m-Y') }}</span>
+                        <span class="author align-self-start">
+                            <a href="#">{{ v.author.username }}</a>
+                        </span>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
 {% endblock %}

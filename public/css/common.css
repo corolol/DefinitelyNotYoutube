@@ -21,6 +21,11 @@ body {
     color: white;
 }
 
+a {
+    color: inherit!important;
+    text-decoration: none;
+}
+
 .material-symbols-outlined {
   font-variation-settings:
   'FILL' 0,
