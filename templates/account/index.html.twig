@@ -29,7 +29,7 @@
                     <span>Uploaded: {{ latest_video.getUploadDate()|date('d-m-Y') }}</span>
                 </div>
                 <div class="col-md-3 d-flex justify-content-center align-items-center">
-                    <button class="btn btn-primary">Go to the video</button>
+                    <button class="btn btn-primary" onclick="window.location.href = '/video?v={{ latest_video.UUID }}'">Go to the video</button>
                 </div>
             </div>
         </div>

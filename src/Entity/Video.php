@@ -44,6 +44,9 @@ class Video
     #[ORM\Column]
     private ?int $views = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $duration = null;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -176,6 +179,18 @@ class Video
     public function setViews(int $views): static
     {
         $this->views = $views;
+
+        return $this;
+    }
+
+    public function getDuration(): ?string
+    {
+        return $this->duration;
+    }
+
+    public function setDuration(string $duration): static
+    {
+        $this->duration = $duration;
 
         return $this;
     }

@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use FFMpeg;
 use FFMpeg\Coordinate\TimeCode;
+use getID3;
 
 use function AppBundle\Utility\randomString;
 
@@ -59,6 +60,7 @@ class VideoController extends AbstractController
             
             if ($videoFile) {
                 $filename = $uuid.'.mp4';
+                $videoPath = $this->getParameter('videos_directory').'/'.$filename;
 
                 try {
                     $videoFile->move($this->getParameter('videos_directory'), $filename);
@@ -78,6 +80,10 @@ class VideoController extends AbstractController
                     ->frame(TimeCode::fromSeconds(0))
                     ->save($thumbnailPath)
                 ;
+                
+                $id3 = new getID3;
+                $fileInfo = $id3->analyze($videoPath);
+                $duration = $fileInfo['playtime_string'];
 
                 $video->setTitle($form->get('title')->getData());
                 $video->setDescription($form->get('description')->getData());
@@ -87,6 +93,7 @@ class VideoController extends AbstractController
                 $video->setFile($filename);
                 $video->setThumbnail($thumbnailFilename);
                 $video->setViews(0);
+                $video->setDuration($duration);
 
                 $em->persist($video);
                 $em->flush();
