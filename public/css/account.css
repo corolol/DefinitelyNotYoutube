@@ -10,11 +10,15 @@
 .baner > .controls > .username {
     padding: 0.25rem 0.5rem;
     border-radius: 5px;
-
+    
     background: rgba(0, 0, 0, 0.75);
     
     font-size: 1.5rem;
     font-weight: bold;
+}
+
+.baner > .controls > .buttons {
+    gap: 0.5rem;
 }
 
 .latest-video {

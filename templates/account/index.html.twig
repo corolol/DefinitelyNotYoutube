@@ -12,9 +12,13 @@
             <img src="/img/banner.png" alt="" class="w-100">
             <div class="controls position-absolute w-100 h-100 py-2 px-3 d-flex align-items-end justify-content-between">
                 <div class="username">{{ app.user.username }}</div>
-                <button class="btn btn-primary" onclick="location.href = '{{ path('app_video_upload') }}';">Upload video</button>
+                <div class="buttons d-flex">
+                    <button class="btn btn-primary" onclick="location.href = '/channel?u={{ app.user.username }}';">Channel</button>
+                    <button class="btn btn-primary" onclick="location.href = '{{ path('app_video_upload') }}';">Upload video</button>
+                </div>
             </div>
         </div>
+        {% if latest_video %}
         <div class="col-12 d-flex justify-content-center">
             {# {{ dump(latest_video) }} #}
             <div class="display-6 py-2">Latest video overview</div>
@@ -30,9 +34,10 @@
                     <span>{{ latest_video.views }} views</span>
                 </div>
                 <div class="col-md-3 d-flex justify-content-center align-items-center">
-                    <button class="btn btn-primary" onclick="window.location.href = '/video?v={{ latest_video.UUID }}'">Go to the video</button>
+                    <button class="btn btn-primary" onclick="window.location.href = '/video?v={{ latest_video.UUID }}'">Watch</button>
                 </div>
             </div>
         </div>
+        {% endif %}
     </div>
 {% endblock %}
