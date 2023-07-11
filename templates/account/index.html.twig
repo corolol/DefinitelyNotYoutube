@@ -27,6 +27,7 @@
                 <div class="col-md-5 d-flex flex-column details">
                     <span class="fw-bold fs-4">{{ latest_video.title }}</span>
                     <span>Uploaded: {{ latest_video.getUploadDate()|date('d-m-Y') }}</span>
+                    <span>{{ latest_video.views }} views</span>
                 </div>
                 <div class="col-md-3 d-flex justify-content-center align-items-center">
                     <button class="btn btn-primary" onclick="window.location.href = '/video?v={{ latest_video.UUID }}'">Go to the video</button>

@@ -16,7 +16,7 @@
             <div class="col-12 col-md-10 d-flex flex-column video-info">
                 <span class="title fs-4">{{ video.title }}</span>
                 <span class="author mb-2">
-                    <a href="#" class="text-decoration-none">
+                    <a href="/channel?u={{ video.getAuthor().getUsername() }}" class="text-decoration-none">
                         {{ video.getAuthor().getUsername() }}
                     </a>
                 </span>
