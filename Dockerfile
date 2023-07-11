@@ -102,6 +102,15 @@ RUN set -eux; \
 		chmod +x bin/console; sync; \
     fi
 
+
+RUN chmod 777 /srv/app/public/videos
+RUN chmod 777 /srv/app/public/img/thumbnails
+
+RUN apt-get -y update
+RUN apt-get -y upgrade
+RUN apt-get install -y ffmpeg
+
+
 # Dev image
 FROM app_php AS app_php_dev
 
