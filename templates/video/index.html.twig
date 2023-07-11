@@ -23,8 +23,13 @@
                 <div class="description d-flex flex-column py-2 px-3">
                     {# <span class="fw-bold mb-1">Description</span> #}
                     <span class="fw-bold mb-1">{{ video.views }} views<br/>Uploaded: {{ video.getUploadDate()|date('d-m-Y') }}</span>
-                    {{ video.description }}
+                    <pre id="description-text">{{ video.description }}</pre>
+                    <div id="description-toggle" tabindex="0">Show more</div>
                 </div>
             </div>
         </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="/script/showMore.js"></script>
 {% endblock %}

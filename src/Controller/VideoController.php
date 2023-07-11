@@ -34,7 +34,7 @@ class VideoController extends AbstractController
             return $this->redirectToRoute('app_index');
         }
 
-        $video->setViews($video->getViews()+1);
+        $video->setViews($video->getViews() + 1);
         $em->flush();
 
         return $this->render('video/index.html.twig', [
@@ -51,42 +51,49 @@ class VideoController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // Create UUID
             do {
                 $uuid = randomString(10);
-                $existingVideo = $em->getRepository(Video::class)->findOneBy(['UUID' => $uuid]); // Check if the uuid is not assigned to any already existing video
+                // Check if the uuid is not assigned to any already existing video
+                $existingVideo = $em->getRepository(Video::class)->findOneBy(['UUID' => $uuid]);
             } while ($existingVideo);
 
             $videoFile = $form->get('video')->getData();  // Get file biary data
-            
+
             if ($videoFile) {
-                $filename = $uuid.'.mp4';
-                $videoPath = $this->getParameter('videos_directory').'/'.$filename;
+                $filename = $uuid . '.mp4';
+                $videoPath = $this->getParameter('videos_directory') . '/' . $filename;
 
                 try {
                     $videoFile->move($this->getParameter('videos_directory'), $filename);
-                }
-                catch (FileException $e) {
+                } catch (FileException $e) {
                     return new Response($e->getMessage(), 500);
                 }
 
                 //Create thumbnail
 
-                $thumbnailFilename = $uuid.'.jpg';
-                $thumbnailPath = $this->getParameter('thumbnails_directory').'/'.$thumbnailFilename;
+                $thumbnailFilename = $uuid . '.jpg';
+                $thumbnailPath = $this->getParameter('thumbnails_directory') . '/' . $thumbnailFilename;
 
                 $ffmpeg = FFMpeg\FFMpeg::create();
-                $ffmpegVideo = $ffmpeg->open($this->getParameter('videos_directory').'/'.$filename);
+                $ffmpegVideo = $ffmpeg->open($this->getParameter('videos_directory') . '/' . $filename);
                 $ffmpegVideo
                     ->frame(TimeCode::fromSeconds(0))
-                    ->save($thumbnailPath)
-                ;
-                
+                    ->save($thumbnailPath);
+
+                // Get duration
                 $id3 = new getID3;
                 $fileInfo = $id3->analyze($videoPath);
                 $duration = $fileInfo['playtime_string'];
 
-                $video->setTitle($form->get('title')->getData());
-                $video->setDescription($form->get('description')->getData());
+
+                $title = htmlentities($form->get('title')->getData());
+                $description = htmlentities($form->get('description')->getData());
+
+                // Add all data to the entity
+                $video->setTitle($title);
+                $video->setDescription($description);
                 $video->setUUID($uuid);
                 $video->setUploadDate(new DateTime());
                 $video->setAuthor($currentUser);
@@ -95,6 +102,7 @@ class VideoController extends AbstractController
                 $video->setViews(0);
                 $video->setDuration($duration);
 
+                // Save
                 $em->persist($video);
                 $em->flush();
 
@@ -105,6 +113,5 @@ class VideoController extends AbstractController
         return $this->render('video/upload.html.twig', [
             'uploadForm' => $form->createView()
         ]);
-
     }
 }
