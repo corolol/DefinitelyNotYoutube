@@ -6,8 +6,18 @@ services:
     environment:
       APP_SECRET: ${APP_SECRET}
       MERCURE_JWT_SECRET: ${CADDY_MERCURE_JWT_SECRET}
+    volumes:
+      - videos:/srv/app/public/videos
+      - thumbnails:/srv/app/public/img/thumbnails
 
   caddy:
     environment:
       MERCURE_PUBLISHER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET}
       MERCURE_SUBSCRIBER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET}
+    volumes:
+      - videos:/srv/app/public/videos
+      - thumbnails:/srv/app/public/img/thumbnails
+
+volumes:
+  videos:
+  thumbnails:
