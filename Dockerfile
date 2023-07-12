@@ -106,9 +106,9 @@ RUN set -eux; \
 RUN chmod 777 /srv/app/public/videos
 RUN chmod 777 /srv/app/public/img/thumbnails
 
-RUN apt-get -y update
-RUN apt-get -y upgrade
-RUN apt-get install -y ffmpeg
+RUN apk update
+RUN apk upgrade
+RUN apk add --no-cache ffmpeg
 
 
 # Dev image
