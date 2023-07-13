@@ -16,7 +16,6 @@ use FFMpeg;
 use FFMpeg\Coordinate\TimeCode;
 use getID3;
 
-use function AppBundle\Utility\randomString;
 
 class VideoController extends AbstractController
 {
@@ -54,7 +53,7 @@ class VideoController extends AbstractController
 
             // Create UUID
             do {
-                $uuid = randomString(10);
+                $uuid = $this->randomString(10);
                 // Check if the uuid is not assigned to any already existing video
                 $existingVideo = $em->getRepository(Video::class)->findOneBy(['UUID' => $uuid]);
             } while ($existingVideo);
@@ -113,5 +112,17 @@ class VideoController extends AbstractController
         return $this->render('video/upload.html.twig', [
             'uploadForm' => $form->createView()
         ]);
+    }
+
+    function randomString(int $length, $characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"): string
+    {
+        $charLength = strlen($characters);
+        $result = '';
+
+        for ($i = 0; $i < $length; $i++) {
+            $result .= $characters[random_int(0, $charLength - 1)];
+        }
+
+        return $result;
     }
 }
