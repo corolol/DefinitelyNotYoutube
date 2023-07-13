@@ -5,10 +5,15 @@
 
 .thumbnail-wrapper {
     position: relative;
+    display: flex;
+    justify-content: center;
     
     width: 30%;
     min-width: 10rem;
     max-width: 20rem;
+    aspect-ratio: 16/9;
+
+    background: black;
     /* width: min(max(30%, 15rem), 22rem); */
 }
 

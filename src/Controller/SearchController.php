@@ -22,8 +22,8 @@ class SearchController extends AbstractController
 
         $result = $em->getRepository(Video::class)->createQueryBuilder('v')
             ->innerJoin(User::class, 'u', Join::WITH, 'v.author = u.id')
-            ->where('v.title LIKE :query')
-            ->orWhere('u.username LIKE :query')
+            ->where('LOWER(v.title) LIKE LOWER(:query)')
+            ->orWhere('LOWER(u.username) LIKE LOWER(:query)')
             ->addOrderBy('v.upload_date', 'DESC')
             ->setParameter('query', '%'.trim($search).'%')
             ->getQuery()

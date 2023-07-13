@@ -28,7 +28,12 @@
     background: #555;
 }
 
-.latest-video .thumbnail, .latest-video .thumbnail > img {
+.latest-video .thumbnail {
     max-height: 15rem;
+    max-width: 100%;
+}
+
+.latest-video .thumbnail > img {
+    max-height: 100%;
     max-width: 100%;
 }
