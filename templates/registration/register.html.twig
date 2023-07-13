@@ -8,7 +8,13 @@
             <div class="col-lg-3 d-flex flex-column text-center">
                 <h1>Register</h1>
 
-                {{ form_errors(registrationForm) }}
+                {{ form(registrationForm) }}
+
+                {# {{ form_errors(registrationForm) }}
+
+                {% for error in errors %}
+                    <div class="alert alert-danger">{{ error.message }}</div>
+                {% endfor %}
 
                 {{ form_start(registrationForm, {'attr': {'class': 'text-start'}}) }}
                     <div class="mb-3">
@@ -16,17 +22,16 @@
                         {{ form_widget(registrationForm.username, {'attr': {'class': 'form-control'}}) }}
                     </div>
                     <div class="mb-3">
-                        {{ form_label(registrationForm.plainPassword, "Password") }}
-                        {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_label(registrationForm.password, "Password") }}
+                        {{ form_widget(registrationForm.password, {'attr': {'class': 'form-control'}}) }}
                     </div>
                     <div class="form-check mb-3">
-                    {# {{ form_row(registrationForm.agreeTerms) }} #}
                         {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
                         {{ form_label(registrationForm.agreeTerms) }}
                     </div>
 
                     <button type="submit" class="btn btn-primary">Register</button>
-                {{ form_end(registrationForm) }}
+                {{ form_end(registrationForm) }} #}
             </div>
         </div>
     </div>

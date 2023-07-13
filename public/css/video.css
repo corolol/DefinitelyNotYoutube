@@ -1,0 +1,55 @@
+.video-wraper {
+    width: 100%;
+    aspect-ratio: 16/9;
+}
+
+video {
+    width: 100%;
+    height: 100%;
+}
+
+.title {
+    font-family: Roboto, sans-serif;
+}
+
+.video-info .author {
+    align-self: flex-start;
+    color: #aaa;
+}
+
+.video-info .author:hover {
+    color: white;
+}
+
+.video-info .author > a {
+    color: inherit;
+}
+
+.description {
+    background: #222;
+    border-radius: 10px;
+}
+
+.description pre {
+    display: box;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-height: 3rem;
+    
+    margin: 0;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.description pre.show-all {
+    -webkit-line-clamp: unset;
+    max-height: unset;
+}
+
+.description #description-toggle {
+    font-weight: bold;
+    cursor: pointer;
+}

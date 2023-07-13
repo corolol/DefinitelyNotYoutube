@@ -1,0 +1,34 @@
+.baner {
+    position: relative;
+}
+
+.baner > .controls {
+    top: 0;
+    left: 0;
+}
+
+.baner > .controls > .username {
+    padding: 0.25rem 0.5rem;
+    border-radius: 5px;
+    
+    background: rgba(0, 0, 0, 0.75);
+    
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.baner > .controls > .buttons {
+    gap: 0.5rem;
+}
+
+.latest-video {
+    border: 1px solid white;
+    border-radius: 10px;
+
+    background: #555;
+}
+
+.latest-video .thumbnail, .latest-video .thumbnail > img {
+    max-height: 15rem;
+    max-width: 100%;
+}

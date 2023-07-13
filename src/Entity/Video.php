@@ -25,7 +25,7 @@ class Video
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $upload_date = null;
 
     #[ORM\Column(length: 255)]
@@ -37,6 +37,15 @@ class Video
 
     #[ORM\OneToMany(mappedBy: 'video', targetEntity: Comment::class, orphanRemoval: true)]
     private Collection $comments;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $thumbnail = null;
+
+    #[ORM\Column]
+    private ?int $views = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $duration = null;
 
     public function __construct()
     {
@@ -146,6 +155,42 @@ class Video
                 $comment->setVideo(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getThumbnail(): ?string
+    {
+        return $this->thumbnail;
+    }
+
+    public function setThumbnail(?string $thumbnail): static
+    {
+        $this->thumbnail = $thumbnail;
+
+        return $this;
+    }
+
+    public function getViews(): ?int
+    {
+        return $this->views;
+    }
+
+    public function setViews(int $views): static
+    {
+        $this->views = $views;
+
+        return $this;
+    }
+
+    public function getDuration(): ?string
+    {
+        return $this->duration;
+    }
+
+    public function setDuration(string $duration): static
+    {
+        $this->duration = $duration;
 
         return $this;
     }

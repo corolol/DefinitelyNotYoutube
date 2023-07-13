@@ -1,0 +1,75 @@
+.search-result {
+    gap: 0.75rem;
+    /* height: 12rem; */
+}
+
+.thumbnail-wrapper {
+    position: relative;
+    
+    width: 30%;
+    min-width: 10rem;
+    max-width: 20rem;
+    /* width: min(max(30%, 15rem), 22rem); */
+}
+
+.thumbnail-wrapper > img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.thumbnail-wrapper > a {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.thumbnail-wrapper > .time {
+    position: absolute;
+    right: 2px;
+    bottom: 2px;
+    z-index: 1;
+
+    padding: 0.05rem 0.25rem;
+
+    background: rgba(0, 0, 0, 0.75);
+    border-radius: 2px;
+
+    font-size: 0.85rem;
+}
+
+
+.search-result > .info > .title {
+    display: box;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    
+    max-height: 3rem;
+
+    overflow: hidden;
+    white-space: normal;
+
+    font-size: 1.25rem;
+    line-height: 1.5rem;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+
+    -webkit-line-clamp: 1;
+    text-overflow: ellipsis;
+}
+
+.search-result > .info > .details {
+    color: #aaa;
+    white-space: nowrap;
+}
+
+.search-result > .info >.author {
+    color: #aaa;
+}
+
+.search-result > .info > .author:hover {
+    color: white;
+}

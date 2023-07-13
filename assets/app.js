@@ -6,8 +6,7 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-import './styles/App.css';
+import './styles/app.css';
 
-export default function App() {
-    return <div className="App">hello</div>
-}
+// start the Stimulus application
+import './bootstrap';

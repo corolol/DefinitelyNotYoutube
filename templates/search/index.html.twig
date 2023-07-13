@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Search results | DefinitelyNotYouTube{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="/css/search.css">
+{% endblock %}
+
+
+{% block body %}
+    <div class="row flex-column align-items-center py-4 gy-3">
+        {% if not result %}
+            <div class="col-10 text-center">No results</div>
+        {% else %}
+            {% for v in result %}
+                <div class="col-12 col-sm-10 d-flex search-result">
+                    <div class="thumbnail-wrapper">
+                        <a href="/video?v={{ v.UUID }}"></a>
+                        <div class="time">{{ v.duration }}</div>
+                        <img src="/img/thumbnails/{{ v.thumbnail }}" alt="">
+                    </div>
+                    <div class="d-flex flex-column flex-grow-1 info">
+                        <span class="title">
+                            <a href="/video?v={{ v.UUID }}">{{ v.title }}</a>
+                        </span>
+                        <span class="details">{{ v.views }} views ● Uploaded: {{ v.getUploadDate()|date('d-m-Y') }}</span>
+                        <span class="author align-self-start">
+                            <a href="#">{{ v.author.username }}</a>
+                        </span>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}
