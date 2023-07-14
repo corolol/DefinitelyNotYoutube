@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Video;
+use App\Form\VideoUpdateFormType;
 use App\Form\VideoUploadFormType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -112,6 +114,51 @@ class VideoController extends AbstractController
         return $this->render('video/upload.html.twig', [
             'uploadForm' => $form->createView()
         ]);
+    }
+
+    #[Route('/video/update', name: "app_video_update")]
+    function update(Request $req, UserInterface $user, EntityManagerInterface $em)
+    {
+        $v = $req->query->get('v');
+        if (!$v) return $this->redirectToRoute('app_account');
+
+        $video = $em->getRepository(Video::class)->findOneBy(['UUID' => $v, 'author' => $user]);
+        if (!$video) return $this->redirectToRoute('app_account');
+
+        $form = $this->createForm(VideoUpdateFormType::class, $video);
+        $form->handleRequest($req);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $newTitle = htmlentities($form->get('title')->getData());
+            $newDescription = htmlentities($form->get('description')->getData());
+
+            $video->setTitle($newTitle);
+            $video->setDescription($newDescription);
+
+            $em->flush();
+
+            return $this->redirectToRoute('app_account');
+        }
+
+        return $this->render('video/update.html.twig', [
+            'updateForm' => $form->createView(),
+            'video' => $video
+        ]);
+    }
+
+    #[Route('/video/remove', name: "app_video_remove")]
+    function remove(Request $req, UserInterface $user, EntityManagerInterface $em)
+    {
+        $v = $req->query->get('v');
+        if (!$v) return $this->redirectToRoute('app_account');
+        $videoRep = $em->getRepository(Video::class);
+
+        $video = $videoRep->findOneBy(['UUID' => $v]);
+        if (!$video || ($video->getAuthor() != $this->getUser() && !$this->isGranted('ROLE_ADMIN'))) return $this->redirectToRoute('app_account');
+
+        $videoRep->remove($video, true);
+
+        return $this->redirectToRoute('app_account');
     }
 
     function randomString(int $length, $characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"): string

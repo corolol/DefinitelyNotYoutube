@@ -37,3 +37,30 @@
     max-height: 100%;
     max-width: 100%;
 }
+
+.all-videos {
+    color: white;
+
+    max-width: 100%;
+}
+
+.all-videos td {
+    vertical-align: middle;
+    height: 3rem;
+}
+
+.all-videos .thumbnail-wrapper {
+    height: 3rem;
+}
+
+.all-videos .buttons-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    
+    height: 3rem;
+}
+
+.all-videos .buttons-wrapper .material-symbols-outlined {
+    cursor: pointer;
+}

@@ -18,26 +18,86 @@
                 </div>
             </div>
         </div>
-        {% if latest_video %}
-        <div class="col-12 d-flex justify-content-center">
-            {# {{ dump(latest_video) }} #}
-            <div class="display-6 py-2">Latest video overview</div>
-        </div>
-        <div class="col-12">
-            <div class="row mx-2 py-2 latest-video">
-                <div class="col-md-4 d-flex justify-content-center thumbnail">
-                    <img src="/img/thumbnails/{{latest_video.thumbnail}}" alt="">
+        {% if videos|length > 0 %}
+            {% set latest_video = videos[0] %}
+            <div class="col-12 d-flex justify-content-center">
+                <div class="display-6 fs-3 py-2">Latest video overview</div>
+            </div>
+            <div class="col-12">
+                <div class="row mx-2 py-2 latest-video">
+                    <div class="col-md-4 d-flex justify-content-center thumbnail">
+                        <img src="/img/thumbnails/{{latest_video.thumbnail}}" alt="">
+                    </div>
+                    <div class="col-md-5 d-flex flex-column details">
+                        <span class="fw-bold fs-4">{{ latest_video.title }}</span>
+                        <span>Uploaded: {{ latest_video.getUploadDate()|date('d-m-Y') }}</span>
+                        <span>{{ latest_video.views }} views</span>
+                    </div>
+                    <div class="col-md-3 d-flex justify-content-center align-items-center">
+                        <button class="btn btn-primary" onclick="window.location.href = '/video?v={{ latest_video.UUID }}'">Watch</button>
+                    </div>
                 </div>
-                <div class="col-md-5 d-flex flex-column details">
-                    <span class="fw-bold fs-4">{{ latest_video.title }}</span>
-                    <span>Uploaded: {{ latest_video.getUploadDate()|date('d-m-Y') }}</span>
-                    <span>{{ latest_video.views }} views</span>
+            </div>
+            <div class="col-12 d-flex justify-content-center">
+                <div class="display-6 fs-3 py-2">All videos</div>
+            </div>
+            <div class="col-12 overflow-auto">
+                <table class="table all-videos">
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Views</th>
+                        <th scope="col">Uploaded</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                    {% for v in videos %}
+                        <tr>
+                            <td>
+                                <div class="d-flex justify-content-center thumbnail-wrapper">
+                                    <img src="/img/thumbnails/{{ v.thumbnail }}" alt="">
+                                </div>
+                            </td>
+                            <td>{{ v.title }}</td>
+                            <td>{{ v.views }}</td>
+                            <td>{{ v.getUploadDate()|date("d-m-Y") }}</td>
+                            <td>
+                                <button class="btn btn-primary" onclick="window.location.href = '/video?v={{ v.UUID }}'">Go</button>
+                            </td>
+                            <td>
+                                <div class="buttons-wrapper">
+                                    <div class="material-symbols-outlined" onclick="window.location.href = '/video/update?v={{ v.UUID }}'">edit</div>   
+                                    <div class="material-symbols-outlined text-danger" data-bs-toggle="modal" data-bs-target="#confirmDeletionModal" data-bs-title="{{ v.title }}" data-bs-uuid="{{ v.uuid }}">delete</div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endif %}
+
+    </div>
+
+    <div class="modal fade text-dark" id="confirmDeletionModal" tabindex="-1" aria-labelledby="confirmDeletionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">WARNING</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="col-md-3 d-flex justify-content-center align-items-center">
-                    <button class="btn btn-primary" onclick="window.location.href = '/video?v={{ latest_video.UUID }}'">Watch</button>
+                <div class="modal-body d-flex flex-column">
+                    <span>You are about to delete video <span id="videoTitle" class="fw-bold"></span>.</span>
+                    <span>Are you sure to proceed?</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="deleteButton">DELETE VIDEO</button>
                 </div>
             </div>
         </div>
-        {% endif %}
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="/script/removeVideo.js"></script>
 {% endblock %}
