@@ -38,8 +38,9 @@ class VideoController extends AbstractController
         $video->setViews($video->getViews() + 1);
         $em->flush();
 
+
         return $this->render('video/index.html.twig', [
-            'video' => $video
+            'video' => $video,
         ]);
     }
 
