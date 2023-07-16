@@ -3,6 +3,7 @@ version: "3.4"
 # Development environment override
 services:
   php:
+    image: notyt-php-dev
     build:
       target: app_php_dev
     volumes:
@@ -19,6 +20,7 @@ services:
       - host.docker.internal:host-gateway
 
   caddy:
+    image: notyt-caddy-dev
     command: ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile", "--watch"]
     volumes:
       - ./public:/srv/app/public:ro
