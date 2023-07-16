@@ -17,13 +17,11 @@ class AccountController extends AbstractController
     {
         $videoRepo = $em->getRepository(Video::class);
         $videos = $videoRepo->findBy(['author' => $user], ['upload_date' => 'DESC']);
-
-        $latestVideo = null;
-        if (sizeof($videos) > 0) $latestVideo = $videos[0];
+        $latestVideo = $videoRepo->findLatestPublicByAuthor($user);
 
         return $this->render('account/index.html.twig', [
             'controller_name' => 'AccountController',
-            // 'latest_video' => $latestVideo,
+            'latest_video' => $latestVideo,
             'videos' => $videos
         ]);
     }

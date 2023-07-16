@@ -20,16 +20,17 @@ class SearchController extends AbstractController
 
         if (!$search) return $this->redirectToRoute("app_index");
 
-        $result = $em->getRepository(Video::class)->createQueryBuilder('v')
-            ->innerJoin(User::class, 'u', Join::WITH, 'v.author = u.id')
-            ->where('LOWER(v.title) LIKE LOWER(:query)')
-            ->orWhere('LOWER(u.username) LIKE LOWER(:query)')
-            ->addOrderBy('v.upload_date', 'DESC')
-            ->setParameter('query', '%'.trim($search).'%')
-            ->getQuery()
-            ->execute()    
-        ;
+        // $result = $em->getRepository(Video::class)->createQueryBuilder('v')
+        //     ->innerJoin(User::class, 'u', Join::WITH, 'v.author = u.id')
+        //     ->where('LOWER(v.title) LIKE LOWER(:query)')
+        //     ->orWhere('LOWER(u.username) LIKE LOWER(:query)')
+        //     ->addOrderBy('v.upload_date', 'DESC')
+        //     ->setParameter('query', '%'.trim($search).'%')
+        //     ->getQuery()
+        //     ->execute()    
+        // ;
 
+        $result = $em->getRepository(Video::class)->searchPublic($search);
 
         return $this->render('search/index.html.twig', [
             'controller_name' => 'SearchController',

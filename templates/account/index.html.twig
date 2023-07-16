@@ -19,7 +19,7 @@
             </div>
         </div>
         {% if videos|length > 0 %}
-            {% set latest_video = videos[0] %}
+            {% if latest_video %}
             <div class="col-12 d-flex justify-content-center">
                 <div class="display-6 fs-3 py-2">Latest video overview</div>
             </div>
@@ -38,6 +38,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
             <div class="col-12 d-flex justify-content-center">
                 <div class="display-6 fs-3 py-2">All videos</div>
             </div>
@@ -61,6 +62,7 @@
                             <td>{{ v.title }}</td>
                             <td>{{ v.views }}</td>
                             <td>{{ v.getUploadDate()|date("d-m-Y") }}</td>
+                            {% if v.processing != 1 %}
                             <td>
                                 <button class="btn btn-primary" onclick="window.location.href = '/video?v={{ v.UUID }}'">Go</button>
                             </td>
@@ -70,6 +72,16 @@
                                     <div class="material-symbols-outlined text-danger" data-bs-toggle="modal" data-bs-target="#confirmDeletionModal" data-bs-title="{{ v.title }}" data-bs-uuid="{{ v.uuid }}">delete</div>
                                 </div>
                             </td>
+                            {% else %}
+                            <td>
+                                <div class="spinner-border text-light" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </td>
+                            <td>
+                                Processing video
+                            </td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                 </table>

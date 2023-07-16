@@ -47,6 +47,9 @@ class Video
     #[ORM\Column(length: 255)]
     private ?string $duration = null;
 
+    #[ORM\Column(nullable: true)]
+    private int $processing = 1;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -191,6 +194,18 @@ class Video
     public function setDuration(string $duration): static
     {
         $this->duration = $duration;
+
+        return $this;
+    }
+
+    public function getProcessing()
+    {
+        return $this->processing;
+    }
+
+    public function setProcessing($processing): static
+    {
+        $this->processing = $processing;
 
         return $this;
     }

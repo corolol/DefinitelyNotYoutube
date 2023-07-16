@@ -36,12 +36,13 @@ video {
     display: box;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     text-overflow: ellipsis;
+    text-wrap: wrap;
     overflow: hidden;
     max-height: 3rem;
-    
     margin: 0;
+    
     font-family: inherit;
     font-size: 1rem;
 }
