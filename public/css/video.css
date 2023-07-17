@@ -38,7 +38,7 @@ video {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
     text-overflow: ellipsis;
-    text-wrap: wrap;
+    white-space: pre-wrap;
     overflow: hidden;
     max-height: 3rem;
     margin: 0;

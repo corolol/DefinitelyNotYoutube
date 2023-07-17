@@ -110,7 +110,7 @@ class VideoController extends AbstractController
                 $em->flush();
 
                 // Run processing process
-                $mb->dispatch(new VideoUploadMessage(['id' => $video->getId(), 'path' => $this->getParameter('google_api_credentials')]));
+                $mb->dispatch(new VideoUploadMessage($video->getId()));
 
                 return $this->redirectToRoute('app_account');
             }
