@@ -83,9 +83,22 @@ class VideoRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('v');
         $qb
             ->innerJoin(User::class, 'u', Join::WITH, 'v.author = u.id')
-            ->where($qb->expr()->neq('v.processing', '1'))
-            ->andWhere('LOWER(v.title) LIKE LOWER(:query)')
-            ->orWhere('LOWER(u.username) LIKE LOWER(:query)')
+            ->where(
+                $qb->expr()->andX(
+                    $qb->expr()->neq('v.processing', '1'),
+                    $qb->expr()->orX(
+                        $qb->expr()->like(
+                            $qb->expr()->lower('v.title'),
+                            $qb->expr()->lower(':query')
+                        ),
+                        $qb->expr()->like(
+                            $qb->expr()->lower('u.username'),
+                            $qb->expr()->lower(':query')
+                        )
+                    )
+                )    
+                // 'LOWER() LIKE LOWER(:query) OR LOWER(u.username) LIKE LOWER(:query))'
+            )
             ->addOrderBy('v.upload_date', 'DESC')
             ->setParameter('query', '%'.trim($query).'%')
         ;
