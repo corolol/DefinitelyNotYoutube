@@ -30,11 +30,15 @@
             <div class="col-12 mt-3 col-md-10 d-flex flex-column comment-section">
                 <div class="display-1 fs-5">Comments</div>
                 <div class="add-comment w-100 my-3">
+                    {% if app.user %}
                     <div id="commentInput" contenteditable="plaintext-only" class="w-100" type="text" tabindex="0"></div>
                     <div id="commentButtons" class="comment-buttons d-none justify-content-end mt-2">
                         <button id="cancelCommentButton" class="btn text-light">Cancel</button>
                         <button id="commentPostButton" class="btn btn-primary disabled">Comment</button>
                     </div>
+                    {% else %}
+                        <span><a href="/login" class="text-decoration-underline">Log in</a> to post a comment</span>
+                    {% endif %}
                 </div>
                 <div id="comments" class="comments w-100 d-flex flex-column py-3">
                     {% for comment in comments %}
