@@ -45,11 +45,11 @@
             <div class="col-12 overflow-auto">
                 <table class="table all-videos">
                     <tr>
-                        <th scope="col"></th>
+                        <th scope="col">Thumbnail</th>
                         <th scope="col">Title</th>
                         <th scope="col">Views</th>
                         <th scope="col">Uploaded</th>
-                        <th scope="col"></th>
+                        <th scope="col">Actions</th>
                         <th scope="col"></th>
                     </tr>
                     {% for v in videos %}
@@ -64,22 +64,22 @@
                             <td>{{ v.getUploadDate()|date("d-m-Y") }}</td>
                             {% if v.processing != 1 %}
                             <td>
-                                <button class="btn btn-primary" onclick="window.location.href = '/video?v={{ v.UUID }}'">Go</button>
-                            </td>
-                            <td>
                                 <div class="buttons-wrapper">
                                     <div class="material-symbols-outlined" onclick="window.location.href = '/video/update?v={{ v.UUID }}'">edit</div>   
                                     <div class="material-symbols-outlined text-danger" data-bs-toggle="modal" data-bs-target="#confirmDeletionModal" data-bs-title="{{ v.title }}" data-bs-uuid="{{ v.uuid }}">delete</div>
                                 </div>
                             </td>
+                            <td>
+                                <button class="btn btn-primary" onclick="window.location.href = '/video?v={{ v.UUID }}'">Go</button>
+                            </td>
                             {% else %}
+                            <td>
+                                Processing video
+                            </td>
                             <td>
                                 <div class="spinner-border text-light" role="status">
                                     <span class="visually-hidden">Loading...</span>
                                 </div>
-                            </td>
-                            <td>
-                                Processing video
                             </td>
                             {% endif %}
                         </tr>

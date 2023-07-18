@@ -56,3 +56,78 @@ video {
     font-weight: bold;
     cursor: pointer;
 }
+
+.comment-section .add-comment #commentInput,
+.comment .comment-edit {
+    border-bottom: 1px solid gray;
+    outline: none;
+    cursor: text;
+}
+
+.comment-section .add-comment #commentInput:focus,
+.comment .comment-edit:focus {
+    border-bottom-color: white;
+}
+
+.comment-section .add-comment #commentInput:empty::before {
+    content: 'Write a comment'
+}
+
+.comment-section .add-comment #commentInput:focus::before {
+    content: '';
+}
+
+.comment-buttons button:active,
+.comment-buttons button:focus,
+.comment-edit-buttons button:active,
+.comment-edit-buttons button:focus {
+    box-shadow: none;
+}
+
+.comment-buttons #commentPostButton,
+.comment-edit-buttons .comment-update-save {
+    border: 0;
+    border-radius: 10rem;
+}
+
+.comment-buttons #commentPostButton:disabled,
+.comment-buttons #commentPostButton.disabled,
+.comment-edit-buttons .comment-update-save:disabled,
+.comment-edit-buttons .comment-update-save.disabled {
+    background: #4a4a4a;
+    color: #888;
+}
+
+
+.comments {
+    gap: 1rem;
+}
+
+.comment {
+    border-left: 1px solid white;
+    padding: 0.5rem;
+    gap: 0.5rem;
+}
+
+.comment:hover {
+    background: #303030;
+}
+
+.comment .material-symbols-outlined {
+    visibility: hidden;
+    cursor: pointer;
+}
+
+.comment:hover .material-symbols-outlined {
+    visibility: visible;
+}
+
+.comment .actions {
+    gap: 0.5rem;
+}
+
+.comment .info {
+    gap: 0.5rem;
+}
+
+

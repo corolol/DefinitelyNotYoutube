@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Video;
 use App\Form\VideoUpdateFormType;
 use App\Form\VideoUploadFormType;
@@ -36,11 +37,14 @@ class VideoController extends AbstractController
             return $this->redirectToRoute('app_index');
         }
 
+        $comments = $em->getRepository(Comment::class)->findBy(['video' => $video], ['date' => 'DESC']);
+
         $video->setViews($video->getViews() + 1);
         $em->flush();
 
         return $this->render('video/index.html.twig', [
             'video' => $video,
+            'comments' => $comments
         ]);
     }
 
@@ -90,8 +94,8 @@ class VideoController extends AbstractController
                 $duration = $fileInfo['playtime_string'];
 
 
-                $title = htmlentities($form->get('title')->getData());
-                $description = htmlentities($form->get('description')->getData());
+                $title = $form->get('title')->getData();
+                $description = $form->get('description')->getData();
 
                 // Add all data to the entity
                 $video->setTitle($title);
@@ -103,14 +107,14 @@ class VideoController extends AbstractController
                 $video->setThumbnail($thumbnailFilename);
                 $video->setViews(0);
                 $video->setDuration($duration);
-                $video->setProcessing(1);
-
+                if ($this->getParameter('kernel.environment') == "dev") $video->setProcessing(0);
+                else $video->setProcessing(1);
                 // Save
                 $em->persist($video);
                 $em->flush();
 
                 // Run processing process
-                $mb->dispatch(new VideoUploadMessage($video->getId()));
+                if ($this->getParameter('kernel.environment') != "dev") $mb->dispatch(new VideoUploadMessage($video->getId()));
 
                 return $this->redirectToRoute('app_account');
             }

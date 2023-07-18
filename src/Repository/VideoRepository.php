@@ -54,6 +54,19 @@ class VideoRepository extends ServiceEntityRepository
         return $result[0];
     }
 
+    public function findPublicByAuthor(User $user) {
+        $qb = $this->createQueryBuilder('v');
+        $qb
+            ->where($qb->expr()->neq('v.processing', '1'))
+            ->andWhere($qb->expr()->eq('v.author', ':author'))
+            ->orderBy('v.upload_date', 'DESC')
+            ->setParameter('author', $user->getId())
+        ;
+
+        $result = $qb->getQuery()->getResult();
+        return $result;
+    }
+
     public function findLatestPublicByAuthor(User $user) {
         $qb = $this->createQueryBuilder('v');
         $qb
