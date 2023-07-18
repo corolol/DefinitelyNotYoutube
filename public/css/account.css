@@ -28,7 +28,45 @@
     background: #555;
 }
 
-.latest-video .thumbnail, .latest-video .thumbnail > img {
+.latest-video .thumbnail {
     max-height: 15rem;
     max-width: 100%;
+}
+
+.latest-video .thumbnail > img {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.all-videos {
+    color: white;
+
+    max-width: 100%;
+}
+
+.all-videos td {
+    vertical-align: middle;
+    height: 3rem;
+}
+
+.all-videos .thumbnail-wrapper {
+    display: inline-block;
+    height: 3rem;
+}
+
+.all-videos .thumbnail-wrapper > img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.all-videos .buttons-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    
+    height: 3rem;
+}
+
+.all-videos .buttons-wrapper .material-symbols-outlined {
+    cursor: pointer;
 }

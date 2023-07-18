@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Video;
+use App\Form\VideoUpdateFormType;
 use App\Form\VideoUploadFormType;
+use App\Message\VideoUploadMessage;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,34 +18,38 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use FFMpeg;
 use FFMpeg\Coordinate\TimeCode;
 use getID3;
-
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class VideoController extends AbstractController
 {
     #[Route('/video', name: 'app_video')]
-    public function index(Request $request, EntityManagerInterface $em): Response
+    public function index(Request $request, EntityManagerInterface $em, MessageBusInterface $mb): Response
     {
         $uuid = $request->query->get('v');
         if (!$uuid) {
             return $this->redirectToRoute('app_index');
         }
 
-        $video = $em->getRepository(Video::class)->findOneBy(['UUID' => $uuid]);
+        $video = $em->getRepository(Video::class)->findOnePublicByUUID($uuid);
 
         if (!$video) {
             return $this->redirectToRoute('app_index');
         }
 
+        $comments = $em->getRepository(Comment::class)->findBy(['video' => $video], ['date' => 'DESC']);
+
         $video->setViews($video->getViews() + 1);
         $em->flush();
 
         return $this->render('video/index.html.twig', [
-            'video' => $video
+            'video' => $video,
+            'comments' => $comments
         ]);
     }
 
     #[Route('/video/upload', name: "app_video_upload")]
-    public function upload(Request $request, EntityManagerInterface $em, UserInterface $currentUser): Response
+    public function upload(Request $request, EntityManagerInterface $em, UserInterface $currentUser, MessageBusInterface $mb, LoggerInterface $log): Response
     {
         $video = new Video();
 
@@ -87,8 +94,8 @@ class VideoController extends AbstractController
                 $duration = $fileInfo['playtime_string'];
 
 
-                $title = htmlentities($form->get('title')->getData());
-                $description = htmlentities($form->get('description')->getData());
+                $title = $form->get('title')->getData();
+                $description = $form->get('description')->getData();
 
                 // Add all data to the entity
                 $video->setTitle($title);
@@ -100,18 +107,73 @@ class VideoController extends AbstractController
                 $video->setThumbnail($thumbnailFilename);
                 $video->setViews(0);
                 $video->setDuration($duration);
-
+                if ($this->getParameter('kernel.environment') == "dev") $video->setProcessing(0);
+                else $video->setProcessing(1);
                 // Save
                 $em->persist($video);
                 $em->flush();
 
-                return $this->redirectToRoute('app_index');
+                // Run processing process
+                if ($this->getParameter('kernel.environment') != "dev") $mb->dispatch(new VideoUploadMessage($video->getId()));
+
+                return $this->redirectToRoute('app_account');
             }
         }
 
         return $this->render('video/upload.html.twig', [
             'uploadForm' => $form->createView()
         ]);
+    }
+
+    #[Route('/video/update', name: "app_video_update")]
+    function update(Request $req, EntityManagerInterface $em)
+    {
+        $v = $req->query->get('v');
+        if (!$v) return $this->redirectToRoute('app_account');
+
+        $video = $em->getRepository(Video::class)->findOnePublicByUUID($v);
+        if (!$video || ($video->getAuthor() != $this->getUser() && !$this->isGranted('ROLE_ADMIN'))) return $this->redirectToRoute('app_account');
+
+        $form = $this->createForm(VideoUpdateFormType::class, $video);
+        $form->handleRequest($req);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $newTitle = htmlentities($form->get('title')->getData());
+            $newDescription = htmlentities($form->get('description')->getData());
+
+            $video->setTitle($newTitle);
+            $video->setDescription($newDescription);
+
+            $em->flush();
+
+            return $this->redirectToRoute('app_account');
+        }
+
+        return $this->render('video/update.html.twig', [
+            'updateForm' => $form->createView(),
+            'video' => $video
+        ]);
+    }
+
+    #[Route('/video/remove', name: "app_video_remove")]
+    function remove(Request $req, EntityManagerInterface $em)
+    {
+        $v = $req->query->get('v');
+        if (!$v) return $this->redirectToRoute('app_account');
+
+        $videoRep = $em->getRepository(Video::class);
+
+        $video = $videoRep->findOnePublicByUUID($v);
+        if (!$video || ($video->getAuthor() != $this->getUser() && !$this->isGranted('ROLE_ADMIN'))) return $this->redirectToRoute('app_account');
+
+        $thumbnail = __DIR__ . '/../../public/img/thumbnails/' . $video->getThumbnail();
+        $videoFile = __DIR__ . '/../../public/videos/' . $video->getFile();
+
+        $videoRep->remove($video, true);
+        unlink($thumbnail);
+        unlink($videoFile);
+
+        return $this->redirectToRoute('app_account');
     }
 
     function randomString(int $length, $characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"): string

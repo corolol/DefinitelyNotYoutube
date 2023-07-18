@@ -21,7 +21,7 @@ class ChannelController extends AbstractController
         $user = $em->getRepository(User::class)->findOneBy(['username' => $username]);
         if (!$user) return $this->redirectToRoute('app_index');
 
-        $videos = $em->getRepository(Video::class)->findBy(['author' => $user], ['upload_date' => 'DESC']);
+        $videos = $em->getRepository(Video::class)->findPublicByAuthor($user);
         // $videos = $user->getVideos();
 
         return $this->render('channel/index.html.twig', [

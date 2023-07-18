@@ -27,9 +27,57 @@
                     <div id="description-toggle" tabindex="0">Show more</div>
                 </div>
             </div>
+            <div class="col-12 mt-3 col-md-10 d-flex flex-column comment-section">
+                <div class="display-1 fs-5">Comments</div>
+                <div class="add-comment w-100 my-3">
+                    <div id="commentInput" contenteditable="plaintext-only" class="w-100" type="text" tabindex="0"></div>
+                    <div id="commentButtons" class="comment-buttons d-none justify-content-end mt-2">
+                        <button id="cancelCommentButton" class="btn text-light">Cancel</button>
+                        <button id="commentPostButton" class="btn btn-primary disabled">Comment</button>
+                    </div>
+                </div>
+                <div id="comments" class="comments w-100 d-flex flex-column py-3">
+                    {% for comment in comments %}
+                        {% set author_username = comment.getAuthor().getUsername() %}
+                        <div id="comment-{{ comment.getId() }}" class="d-flex justify-content-between align-items-center comment">
+                            <div class="d-flex flex-column w-100">
+                                <div class="info d-flex">
+                                    <span class="author fw-bold">
+                                        <a href="/channel?u={{author_username}}">{{ author_username }}</a>
+                                    </span>
+                                    <span class="date">
+                                        {{ comment.getDate()|date('d-m-Y H:i', 'Europe/Warsaw') }}
+                                    </span>
+                                </div>
+                                <div id="commentContent-{{ comment.getId() }}" class="comment-content py-1">
+                                    {{ comment.content }}
+                                </div>
+                                <div id="commentEdit-{{ comment.getId() }}" contenteditable="plaintext-only" class="comment-content py-1 d-none comment-edit" data-comment-id="{{ comment.getId() }}">{{ comment.content }}</div>
+                                <div id="commentEditButtons-{{ comment.getId() }}" class="d-none mt-2 justify-content-end comment-edit-buttons">
+                                    <button id="cancelCommentUpdateButton-{{ comment.getId() }}" class="btn text-light cancel-comment-edit" data-comment-id="{{ comment.getId() }}">Cancel</button>
+                                    <button id="commentUpdateButton-{{ comment.getId() }}" class="btn btn-primary comment-update-save" data-comment-id="{{ comment.getId() }}">Update</button>
+                                </div>
+                            </div>
+                            {% if app.user and comment.getAuthor().getId() == app.user.id %}
+                            <div id="commentActions-{{ comment.getId() }}" class="actions d-flex">
+                                <div class="material-symbols-outlined commentEdit" data-comment-id="{{ comment.getId() }}">edit</div>
+                                <div class="material-symbols-outlined commentDelete" data-comment-id="{{ comment.getId() }}">delete</div>
+                            
+                            </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
 {% endblock %}
 
 {% block javascripts %}
     <script src="/script/showMore.js"></script>
+    <script src="/script/Commenter.js"></script>
+    <script>
+        const commenter = new Commenter("{{video.UUID}}");
+    </script>
+    <script src="/script/commentField.js"></script>
+    <script src="/script/commentActions.js"></script>
 {% endblock %}

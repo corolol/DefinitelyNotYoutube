@@ -2,6 +2,7 @@ version: "3.4"
 
 services:
   php:
+    image: corolol/notyt-php
     build:
       context: .
       target: app_php
@@ -23,8 +24,12 @@ services:
       MERCURE_URL: ${CADDY_MERCURE_URL:-http://caddy/.well-known/mercure}
       MERCURE_PUBLIC_URL: https://${SERVER_NAME:-localhost}/.well-known/mercure
       MERCURE_JWT_SECRET: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
+      GOOGLE_APPLICATION_CREDENTIALS: /run/secrets/gcp-credentials
+    secrets:
+        - gcp-credentials
 
   caddy:
+    image: corolol/notyt-caddy
     build:
       context: .
       target: app_caddy
@@ -70,6 +75,10 @@ services:
       # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
       # - ./docker/db/data:/var/lib/postgresql/data:rw
 ###< doctrine/doctrine-bundle ###
+
+secrets:
+  gcp-credentials:
+    file: ./google-creds.json
 
 volumes:
   php_socket:

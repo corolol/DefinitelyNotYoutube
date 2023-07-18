@@ -46,6 +46,19 @@ a {
     background: #444;
 }
 
+.topbar .right-side, .topbar .left-side {
+    gap: 0.5rem;
+}
+
+
+.topbar > .visible {
+    display: flex;
+}
+
+.topbar > .hidden {
+    display: none;
+}
+
 .topbar a {
     display: flex;
     flex: 0 0 auto;
@@ -57,18 +70,26 @@ a {
     width: 211px;
 }
 
-.topbar > .material-symbols-outlined:hover {
+.topbar .material-symbols-outlined:hover {
     cursor: pointer;
     font-size: 1.5rem;
 }
 
-.topbar > .search-bar {
+.topbar .search-bar {
     width: 40%;
     height: 100%;
     border: 1px solid white;
     border-radius: 10rem;
     background: #222;
     overflow: hidden;
+}
+
+.topbar > #searchTopbar {
+    gap: 1rem;
+}
+
+.topbar > #searchTopbar > .search-bar {
+    width: 100%;
 }
 
 .search-bar > input {
@@ -116,8 +137,45 @@ a {
     height: 100%;
 }
 
+
 .sidebar > .sidebar-elem > .icon {
     fill: white;
+}
+
+.sidebar.sidebar-sm {
+    top: 0;
+    left: 0;
+    
+    display: flex!important;
+
+    width: 0;
+    height: 100vh;
+    padding: 0;
+    overflow-x: hidden;
+
+    transition: 0.25s all;
+
+    z-index: 20;
+}
+
+.sidebar.sidebar-sm.shown {
+    padding: 0 1rem;
+    width: 18rem;
+}
+
+.sidebar.sidebar-sm.hidden {
+    width: 0;
+}
+
+.sidebar.sidebar-sm .sidebarTop {
+    gap: 0.5rem;
+    height: var(--topbar-height);
+    padding: 0.5rem 0;
+    margin-bottom: 1rem;
+}
+
+.sidebar.sidebar-sm .sidebarTop .material-symbols-outlined {
+    cursor: pointer;
 }
 
 .content {
@@ -157,5 +215,15 @@ a {
     
     .sidebar > .sidebar-elem {
         font-size: 0.75rem;
+    }
+
+    .sidebar.sidebar-sm {
+        display: none!important;
+    }
+}
+
+@media screen and (576px <= width) {
+    .sidebar.sidebar-sm {
+        display: none!important;
     }
 }
